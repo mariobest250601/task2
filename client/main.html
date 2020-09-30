@@ -1,0 +1,223 @@
+<head>
+  <title>TaskToDo</title>
+</head>
+
+<body class ="backimg">
+  <div class="container back">
+  {{> navBar}}
+  {{> mainBody}}
+  </div>
+</body>
+
+<template name="navBar">
+  <header>
+    <div class="collapse bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">About</h4>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <h4 class="text-white">You can...</h4>
+            <ul class="list-unstyled">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container d-flex justify-content-between">
+        <a href="#" class="navbar-brand d-flex align-items-center">         
+          <strong>Planner</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+</template>
+
+
+<template name="myJumbo">
+
+  <section class="jumbotron text-center">
+
+    <div class="container ">
+      <h1 class="jumbotron-heading"> Planner </h1>
+       <p class="lead text-muted">Your Private task will be highlighted. .</p>
+      
+
+      <div class="row">
+        <div class="col">
+
+      
+        
+        {{#if currentUser}} 
+        <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTaskModal">
+  Add your task here
+</button>
+        {{/if}}
+<div class="row
+my-4 justify-content-around">
+  <div class ="col-4 text-center">
+     <div class="btn btn-primary">
+
+        {{> loginButtons}}
+        </div>
+  </div>
+</div>
+        
+
+<!-- Modal -->
+
+<div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a Task</h5>
+        <button type="button" class="close js-exitAdd" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="imgPlaceHolder.png" alt="" class="placeHolder">
+        <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" >Task Subject</span>
+  </div>
+  <input type="text" class="form-control" placeholder="..." aria-label="Username" aria-describedby="basic-addon1" id="tName" >
+</div>
+
+
+
+
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text"  >Enter a short description</span>
+  </div>
+  <textarea class="form-control" aria-label="With textarea" id = "tdesc" ></textarea>
+</div>
+
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text"  >Enter a full description of your task</span>
+  </div>
+  <textarea class="form-control" aria-label="With textarea" id = "fdesc" ></textarea>
+</div>
+       
+      </div>
+      <div class="modal-footer">
+         <input type="radio" id="publict" name="gender" value="public">
+        <label for="publict">Public</label><br>
+        <input type="radio" id="privatet" name="gender" value="private">
+        <label for="privatet">Private</label><br>
+        <button type="button" class="btn btn-secondary js-exitAdd " data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary js-save" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+
+
+<template name = "tasksLib">
+<div class="container backcol ">
+  <div class="row">
+    {{>viewTemp}}
+    {{>confirmTemp}}
+    {{#each allTask}}
+      {{#if usershow}} 
+        <div class="col-md-4 " id={{_id}}>
+          <div class="card-group">
+              <div class="card mb-3 ">
+                  <div class="card-body {{#if userChoice}} privatetask {{/if}}" id ={{_id}}>
+                    
+                      <h5 class="card-title {{#if completed}} checked {{/if}}">{{tName}}</h5>
+                      
+                      <p class="card-text">{{tdesc}}</p>
+                        {{#if currentUser}} 
+                          <h5>by {{createdBy}}</h5>
+                        {{/if}}
+                        <button type="button" class="btn btn-sm btn-outline-secondary js-view ">View</button>
+                        <i class="fa fa-trash js-delete color2"></i>
+                        <input type="checkbox" class="smartwater" completed={{checked}}>
+                  </div>
+              </div>
+          </div>
+          </div> 
+      {{/if}}
+    {{/each}}
+  </div>  
+  </div>     
+</template>
+<template name="mainBody">
+  <main role="main">
+
+    {{> myJumbo}}
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          
+          {{> tasksLib}}
+
+        </div> 
+      </div>
+    </div>
+
+  </main>
+</template>
+
+<template name = "viewTemp">
+
+<!-- Modal --> 
+<div class="modal fade" id="viewTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Description</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <h4 id = "viewContent" >  </h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+</template>
+
+<template name="confirmTemp">
+  <!-- ========================= -->
+    <!-- Modal --> 
+    <div class="modal fade" id="confirmModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Do you want to delete ?</h5>
+          </div>
+          <div class="modal-footer">
+            <input id="deleteId" type="hidden">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Yes</button>
+            <button type="button" class="btn btn-primary js-confirm" data-dismiss="modal">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ========================= -->
+</template>
